@@ -5,6 +5,16 @@ const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
 };
 
+function normalizeDatabaseUrl(connectionString: string) {
+  const databaseUrl = new URL(connectionString);
+
+  if (databaseUrl.searchParams.get("sslmode") === "require") {
+    databaseUrl.searchParams.set("sslmode", "verify-full");
+  }
+
+  return databaseUrl.toString();
+}
+
 function createPrismaClient() {
   const connectionString = process.env.DATABASE_URL;
 
@@ -16,7 +26,7 @@ function createPrismaClient() {
 
   return new PrismaClient({
     adapter: new PrismaPg({
-      connectionString,
+      connectionString: normalizeDatabaseUrl(connectionString),
     }),
     log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
