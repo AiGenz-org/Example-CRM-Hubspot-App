@@ -45,7 +45,12 @@ export function LeadForm() {
       <div className="grid gap-4 md:grid-cols-2">
         <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" name="name" placeholder="Avery Stone" />
+          <Input
+            id="name"
+            name="name"
+            placeholder="Avery Stone"
+            className="h-10 bg-white"
+          />
           <FieldError errors={state.fieldErrors?.name} />
         </div>
         <div className="grid gap-2">
@@ -55,6 +60,7 @@ export function LeadForm() {
             name="email"
             type="email"
             placeholder="avery@example.com"
+            className="h-10 bg-white"
           />
           <FieldError errors={state.fieldErrors?.email} />
         </div>
@@ -63,12 +69,22 @@ export function LeadForm() {
       <div className="grid gap-4 md:grid-cols-2">
         <div className="grid gap-2">
           <Label htmlFor="phone">Phone</Label>
-          <Input id="phone" name="phone" placeholder="+1 415 555 0148" />
+          <Input
+            id="phone"
+            name="phone"
+            placeholder="+1 415 555 0148"
+            className="h-10 bg-white"
+          />
           <FieldError errors={state.fieldErrors?.phone} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="company">Company</Label>
-          <Input id="company" name="company" placeholder="Northstar Studio" />
+          <Input
+            id="company"
+            name="company"
+            placeholder="Northstar Studio"
+            className="h-10 bg-white"
+          />
           <FieldError errors={state.fieldErrors?.company} />
         </div>
       </div>
@@ -80,7 +96,7 @@ export function LeadForm() {
             id="serviceInterested"
             name="serviceInterested"
             defaultValue=""
-            className="border-input bg-background ring-offset-background focus-visible:ring-ring flex h-9 w-full rounded-md border px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="border-input bg-white ring-offset-background focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           >
             <option value="" disabled>
               Select a service
@@ -100,6 +116,7 @@ export function LeadForm() {
             name="budget"
             inputMode="decimal"
             placeholder="$5,000"
+            className="h-10 bg-white"
           />
           <FieldError errors={state.fieldErrors?.budget} />
         </div>
@@ -112,6 +129,7 @@ export function LeadForm() {
           name="message"
           rows={5}
           placeholder="Tell us what you are trying to improve, launch, or automate."
+          className="bg-white"
         />
         <FieldError errors={state.fieldErrors?.message} />
       </div>
@@ -120,7 +138,7 @@ export function LeadForm() {
         type="submit"
         size="lg"
         disabled={isPending}
-        className="w-full sm:w-fit"
+        className="h-11 w-full bg-[#08111f] text-white hover:bg-[#12223a] sm:w-fit"
       >
         {isPending ? "Sending" : "Send inquiry"}
         <ArrowRight className="size-4" />

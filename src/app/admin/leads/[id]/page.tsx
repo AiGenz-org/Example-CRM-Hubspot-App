@@ -1,5 +1,7 @@
 import Link from "next/link";
+import type { ComponentType } from "react";
 import { notFound } from "next/navigation";
+import { ArrowLeft, BadgeDollarSign, Building2, Mail, Phone } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { LeadStatusBadge } from "@/components/leads/lead-status-badge";
 import { RetrySyncButton } from "@/components/leads/retry-sync-button";
@@ -13,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -29,21 +32,28 @@ export default async function LeadDetailPage({
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-5 py-8">
+    <main className="min-h-screen bg-[#f5f7fb] px-5 py-8 text-zinc-950">
       <div className="mx-auto max-w-5xl space-y-6">
         <div className="flex items-center justify-between">
-          <Link href="/admin" className={buttonVariants({ variant: "outline" })}>
+          <Link
+            href="/admin"
+            className={cn(buttonVariants({ variant: "outline" }), "gap-2 bg-white")}
+          >
+            <ArrowLeft className="size-4" />
             Back to dashboard
           </Link>
           {lead.syncStatus === "FAILED" ? <RetrySyncButton leadId={lead.id} /> : null}
         </div>
 
-        <Card className="rounded-lg">
-          <CardHeader>
+        <Card className="overflow-hidden rounded-lg border-zinc-200 bg-white shadow-xl shadow-zinc-950/5">
+          <CardHeader className="border-b border-zinc-200 bg-[#08111f] text-white">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <CardTitle className="text-3xl">{lead.name}</CardTitle>
-                <p className="mt-2 text-zinc-600">{lead.email}</p>
+                <p className="mb-3 text-sm font-medium uppercase tracking-[0.14em] text-teal-200">
+                  Lead profile
+                </p>
+                <CardTitle className="text-4xl">{lead.name}</CardTitle>
+                <p className="mt-2 text-zinc-300">{lead.email}</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <LeadStatusBadge status={lead.status} />
@@ -53,10 +63,10 @@ export default async function LeadDetailPage({
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid gap-4 md:grid-cols-2">
-              <Detail label="Phone" value={lead.phone} />
-              <Detail label="Company" value={lead.company} />
-              <Detail label="Service" value={lead.serviceInterested} />
-              <Detail label="Budget" value={lead.budget} />
+              <Detail icon={Phone} label="Phone" value={lead.phone} />
+              <Detail icon={Building2} label="Company" value={lead.company} />
+              <Detail icon={Mail} label="Service" value={lead.serviceInterested} />
+              <Detail icon={BadgeDollarSign} label="Budget" value={lead.budget} />
             </div>
 
             <Separator />
@@ -70,7 +80,7 @@ export default async function LeadDetailPage({
 
             <div className="grid gap-2">
               <h2 className="font-semibold">Message</h2>
-              <p className="whitespace-pre-wrap rounded-lg border bg-white p-4 leading-7 text-zinc-700">
+              <p className="whitespace-pre-wrap rounded-lg border border-zinc-200 bg-zinc-50 p-4 leading-7 text-zinc-700">
                 {lead.message}
               </p>
             </div>
@@ -101,18 +111,23 @@ export default async function LeadDetailPage({
 }
 
 function Detail({
+  icon: Icon,
   label,
   value,
 }: {
+  icon?: ComponentType<{ className?: string }>;
   label: string;
   value?: string | null;
 }) {
   return (
-    <div className="rounded-lg border bg-white p-4">
-      <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
-        {label}
-      </p>
-      <p className="mt-2 font-medium text-zinc-900">{value || "Not provided"}</p>
+    <div className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+      <div className="flex items-center gap-2">
+        {Icon ? <Icon className="size-4 text-teal-600" /> : null}
+        <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
+          {label}
+        </p>
+      </div>
+      <p className="mt-3 font-medium text-zinc-900">{value || "Not provided"}</p>
     </div>
   );
 }

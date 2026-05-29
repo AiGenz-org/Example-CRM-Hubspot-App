@@ -1,4 +1,12 @@
 import Link from "next/link";
+import {
+  ArrowUpRight,
+  BadgeAlert,
+  CheckCircle2,
+  Clock3,
+  Layers3,
+  UsersRound,
+} from "lucide-react";
 import { LeadStatus } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { leadStatusValues } from "@/lib/validations/lead";
@@ -55,46 +63,68 @@ export default async function AdminPage({
   );
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-5 py-8">
+    <main className="min-h-screen bg-[#f5f7fb] px-5 py-8 text-zinc-950">
       <div className="mx-auto max-w-7xl space-y-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-medium uppercase tracking-[0.14em] text-teal-700">
-              Admin dashboard
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold">Lead operations</h1>
+        <div className="overflow-hidden rounded-lg border border-zinc-200 bg-[#08111f] text-white shadow-xl shadow-zinc-950/10">
+          <div className="bg-[linear-gradient(rgba(255,255,255,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.055)_1px,transparent_1px)] bg-[size:36px_36px] p-6 sm:p-8">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-teal-300/25 bg-teal-300/10 px-3 py-1 text-sm font-medium text-teal-100">
+                  <Layers3 className="size-4 text-teal-300" />
+                  Admin dashboard
+                </div>
+                <h1 className="text-4xl font-semibold">Lead operations</h1>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
+                  Monitor local pipeline movement, HubSpot sync health, and
+                  retry failed CRM activity from one focused workspace.
+                </p>
+              </div>
+              <Link
+                href="/"
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  "gap-2 border-white/20 bg-white/10 text-white hover:bg-white/15",
+                )}
+              >
+                Public form
+                <ArrowUpRight className="size-4" />
+              </Link>
+            </div>
           </div>
-          <Link href="/" className={buttonVariants({ variant: "outline" })}>
-            Public form
-          </Link>
         </div>
 
         <div className="grid gap-4 md:grid-cols-4">
-          <Card className="rounded-lg">
-            <CardHeader>
+          <Card className="rounded-lg border-zinc-200 bg-white shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm text-zinc-600">Visible leads</CardTitle>
+              <UsersRound className="size-5 text-zinc-400" />
             </CardHeader>
-            <CardContent className="text-3xl font-semibold">{totalLeads}</CardContent>
+            <CardContent>
+              <p className="text-3xl font-semibold">{totalLeads}</p>
+            </CardContent>
           </Card>
-          <Card className="rounded-lg">
-            <CardHeader>
+          <Card className="rounded-lg border-zinc-200 bg-white shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm text-zinc-600">Synced</CardTitle>
+              <CheckCircle2 className="size-5 text-emerald-500" />
             </CardHeader>
             <CardContent className="text-3xl font-semibold text-emerald-700">
               {syncCounts.SYNCED ?? 0}
             </CardContent>
           </Card>
-          <Card className="rounded-lg">
-            <CardHeader>
+          <Card className="rounded-lg border-zinc-200 bg-white shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm text-zinc-600">Pending</CardTitle>
+              <Clock3 className="size-5 text-amber-500" />
             </CardHeader>
             <CardContent className="text-3xl font-semibold text-amber-700">
               {syncCounts.PENDING ?? 0}
             </CardContent>
           </Card>
-          <Card className="rounded-lg">
-            <CardHeader>
+          <Card className="rounded-lg border-zinc-200 bg-white shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm text-zinc-600">Failed</CardTitle>
+              <BadgeAlert className="size-5 text-rose-500" />
             </CardHeader>
             <CardContent className="text-3xl font-semibold text-rose-700">
               {syncCounts.FAILED ?? 0}
@@ -102,7 +132,7 @@ export default async function AdminPage({
           </Card>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 rounded-lg border border-zinc-200 bg-white p-2 shadow-sm">
           <Link
             href="/admin"
             className={buttonVariants({
@@ -126,11 +156,11 @@ export default async function AdminPage({
           ))}
         </div>
 
-        <Card className="overflow-hidden rounded-lg">
+        <Card className="overflow-hidden rounded-lg border-zinc-200 bg-white shadow-sm">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Lead</TableHead>
+              <TableRow className="bg-zinc-50/80">
+                <TableHead className="h-12">Lead</TableHead>
                 <TableHead>Service</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>CRM sync</TableHead>
@@ -141,11 +171,11 @@ export default async function AdminPage({
             <TableBody>
               {leads.length ? (
                 leads.map((lead) => (
-                  <TableRow key={lead.id}>
+                  <TableRow key={lead.id} className="hover:bg-teal-50/40">
                     <TableCell>
                       <Link
                         href={`/admin/leads/${lead.id}`}
-                        className="font-medium hover:underline"
+                        className="font-semibold text-zinc-950 hover:text-teal-700"
                       >
                         {lead.name}
                       </Link>
@@ -169,7 +199,7 @@ export default async function AdminPage({
                         href={`/admin/leads/${lead.id}`}
                         className={cn(
                           buttonVariants({ variant: "ghost", size: "sm" }),
-                          "ml-auto",
+                          "ml-auto text-zinc-700 hover:text-zinc-950",
                         )}
                       >
                         View
