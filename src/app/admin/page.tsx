@@ -31,6 +31,7 @@ import {
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 function getStatusFilter(searchParams: { status?: string }) {
   const status = searchParams.status;
