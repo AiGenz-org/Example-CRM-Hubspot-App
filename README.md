@@ -106,6 +106,20 @@ npx prisma migrate dev
 docker compose down
 ```
 
+## Vercel Deployment
+
+Set these environment variables in Vercel before deploying:
+
+```bash
+DATABASE_URL="your-neon-or-postgres-connection-string"
+HUBSPOT_ACCESS_TOKEN="your-hubspot-private-app-token"
+HUBSPOT_PIPELINE_ID="default"
+HUBSPOT_DEALSTAGE_ID="appointmentscheduled"
+NEXT_PUBLIC_APP_URL="https://your-vercel-domain.vercel.app"
+```
+
+The build script runs `prisma generate` before `next build`, so Vercel can build the ignored generated Prisma client.
+
 ## Project Structure
 
 ```text
