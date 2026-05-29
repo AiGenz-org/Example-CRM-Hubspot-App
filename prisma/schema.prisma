@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  WON
+  LOST
+}
+
+enum SyncStatus {
+  PENDING
+  SYNCED
+  FAILED
+}
+
+model Lead {
+  id                String     @id @default(cuid())
+  name              String
+  email             String
+  phone             String?
+  company           String?
+  serviceInterested String
+  budget            String?
+  message           String
+  status            LeadStatus @default(NEW)
+  syncStatus        SyncStatus @default(PENDING)
+  syncError         String?
+  hubspotContactId  String?
+  hubspotDealId     String?
+  lastSyncedAt      DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([syncStatus])
+  @@index([hubspotDealId])
+}
+
+model HubspotWebhookEvent {
+  id          String   @id @default(cuid())
+  eventId     String?
+  eventType   String?
+  objectId    String?
+  subscriptionType String?
+  payload     Json
+  receivedAt  DateTime @default(now())
+
+  @@index([objectId])
+  @@index([subscriptionType])
+}
